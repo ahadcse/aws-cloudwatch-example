@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Cloudwatch alarm definitions for SQS
+
+Parameters:
+  Service:
+    Type: String
+
+Resources:
+
+  SQSAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: "Alarm if queue depth grows beyond 0 messages"
+      Namespace: "AWS/SQS"
+      MetricName: ApproximateNumberOfMessagesVisible
+      ActionsEnabled: true
+      Dimensions:
+        - Name: QueueName
+          Value : !Sub ${Service}-sqs
+      Statistic: Sum
+      Period: 60
+      Unit: Count
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      AlarmActions:
+        - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:cloudwatch-monitoring-alarms
+      InsufficientDataActions:
+        - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:cloudwatch-monitoring-alarms

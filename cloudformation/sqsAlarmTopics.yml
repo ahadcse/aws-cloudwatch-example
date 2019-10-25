@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Cloudwatch alarm topics definitions
+
+Parameters:
+  Service:
+    Type: String
+
+Resources:
+
+  DLQAlarmTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub ${Service}-alarms
+
+  SupportEmailSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: ahadcse@live.com
+      Protocol: email
+      TopicArn: !Ref DLQAlarmTopic

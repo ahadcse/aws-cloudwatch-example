@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Deployment S3 Bucket
+Parameters:
+  BucketName:
+    Type: String
+Resources:
+  DeploymentBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        Ref: BucketName
+      VersioningConfiguration:
+        Status: Enabled
+Outputs:
+  DeploymentBucket:
+    Value:
+      Ref: DeploymentBucket
+    Description: Deployment Bucket
